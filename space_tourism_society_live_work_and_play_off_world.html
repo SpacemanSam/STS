@@ -1,0 +1,1131 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Space Tourism Society (STS) | Live, Work, and Play Off-World</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter & JetBrains Mono & Space Grotesk -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Space Grotesk', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        obsidian: '#050811',
+                        cosmos: '#0B1021',
+                        nebula: '#121933',
+                        cyanGlow: '#38BDF8',
+                        solarGold: '#F59E0B',
+                    },
+                    backgroundImage: {
+                        'orbital-grid': 'radial-gradient(rgba(56, 189, 248, 0.12) 1px, transparent 1px)',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #050811;
+            color: #F8FAFC;
+            overflow-x: hidden;
+        }
+
+        /* Subtle aerospace blueprint grid background */
+        .bg-grid-pattern {
+            background-size: 36px 36px;
+            background-image: 
+                linear-gradient(to right, rgba(56, 189, 248, 0.04) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(56, 189, 248, 0.04) 1px, transparent 1px);
+        }
+
+        /* Glassmorphism cards */
+        .glass-panel {
+            background: rgba(11, 16, 33, 0.72);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(148, 163, 184, 0.14);
+        }
+
+        .glass-panel-hover {
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .glass-panel-hover:hover {
+            border-color: rgba(56, 189, 248, 0.45);
+            box-shadow: 0 12px 40px -12px rgba(56, 189, 248, 0.2);
+            transform: translateY(-2px);
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #050811;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1E293B;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #38BDF8;
+        }
+
+        /* Slow orbital ring rotation */
+        @keyframes spinSlow {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        @keyframes spinReverseSlow {
+            from { transform: rotate(360deg); }
+            to { transform: rotate(0deg); }
+        }
+        .animate-orbit {
+            animation: spinSlow 90s linear infinite;
+        }
+        .animate-orbit-reverse {
+            animation: spinReverseSlow 120s linear infinite;
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-sky-500/30 selection:text-sky-200">
+
+    <!-- Toast Notification Banner (Replaces alert()) -->
+    <div id="toastNotification" class="fixed bottom-6 right-6 z-50 transform translate-y-24 opacity-0 transition-all duration-300 pointer-events-none max-w-md">
+        <div class="glass-panel border-sky-400/40 rounded-xl p-4 shadow-2xl flex items-start gap-3">
+            <div class="w-8 h-8 rounded-lg bg-sky-500/20 flex items-center justify-center text-sky-400 shrink-0 mt-0.5">
+                <i data-lucide="check-circle-2" class="w-5 h-5"></i>
+            </div>
+            <div>
+                <h4 id="toastTitle" class="font-display font-semibold text-sm text-white">Action Confirmed</h4>
+                <p id="toastMessage" class="text-xs text-slate-300 mt-1">Your request has been logged by STS Mission Control.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sticky Top Navigation Bar -->
+    <header class="fixed top-0 inset-x-0 z-40 glass-panel border-b border-slate-800/80">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <!-- STS Logo / Wordmark -->
+                <a href="#" class="flex items-center gap-3.5 group">
+                    <div class="relative w-10 h-10 rounded-xl bg-gradient-to-br from-sky-400/20 to-amber-500/20 border border-sky-400/40 flex items-center justify-center overflow-hidden group-hover:border-sky-400 transition-colors">
+                        <!-- Custom STS Orbital Emblem SVG -->
+                        <svg class="w-6 h-6 text-sky-400" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="16" cy="16" r="6" stroke="currentColor" stroke-width="2"/>
+                            <ellipse cx="16" cy="16" rx="14" ry="5" transform="rotate(-28 16 16)" stroke="#F59E0B" stroke-width="1.75"/>
+                            <circle cx="26" cy="10.5" r="2" fill="#F59E0B"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <span class="font-display font-bold text-lg tracking-tight text-white">SPACE TOURISM SOCIETY</span>
+                        </div>
+                        <span class="block font-mono text-[10px] tracking-[0.22em] text-sky-400 uppercase">Est. 1996 • Off-World Advocacy</span>
+                    </div>
+                </a>
+
+                <!-- Desktop Navigation -->
+                <nav class="hidden lg:flex items-center gap-7 text-sm font-medium text-slate-300">
+                    <a href="#mission" class="hover:text-sky-400 transition-colors">Mission</a>
+                    <a href="#pathways" class="hover:text-sky-400 transition-colors">Pathways to Space</a>
+                    <a href="#chapters" class="hover:text-sky-400 transition-colors">Global Chapters</a>
+                    <a href="#conference" class="hover:text-sky-400 transition-colors">Conference & Awards</a>
+                    <a href="#membership" class="hover:text-sky-400 transition-colors">Membership</a>
+                </nav>
+
+                <!-- CTA & Mobile Toggle -->
+                <div class="flex items-center gap-3">
+                    <button onclick="openMembershipModal('Professional / Futurist')" class="hidden sm:inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-400 hover:to-blue-500 text-white font-semibold text-sm shadow-lg shadow-sky-500/25 transition-all cursor-pointer">
+                        <span>Join STS</span>
+                        <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
+                    </button>
+                    <button id="mobileMenuBtn" class="lg:hidden p-2.5 rounded-xl glass-panel text-slate-300 hover:text-white" aria-label="Toggle Menu">
+                        <i data-lucide="menu" class="w-5 h-5"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Navigation Drawer -->
+        <div id="mobileMenu" class="hidden lg:hidden border-t border-slate-800/80 bg-[#070B16]/95 backdrop-blur-xl px-4 pt-4 pb-6 space-y-3">
+            <a href="#mission" class="mobile-nav-link block px-3 py-2.5 rounded-lg text-slate-200 hover:bg-slate-800/60 font-medium">Mission & Philosophy</a>
+            <a href="#pathways" class="mobile-nav-link block px-3 py-2.5 rounded-lg text-slate-200 hover:bg-slate-800/60 font-medium">Pathways to Space (6 Tiers)</a>
+            <a href="#chapters" class="mobile-nav-link block px-3 py-2.5 rounded-lg text-slate-200 hover:bg-slate-800/60 font-medium">Global Chapters</a>
+            <a href="#conference" class="mobile-nav-link block px-3 py-2.5 rounded-lg text-slate-200 hover:bg-slate-800/60 font-medium">Conference & Orbit Awards</a>
+            <a href="#membership" class="mobile-nav-link block px-3 py-2.5 rounded-lg text-slate-200 hover:bg-slate-800/60 font-medium">Membership Tiers</a>
+            <div class="pt-2">
+                <button onclick="openMembershipModal('Professional / Futurist')" class="w-full py-3 rounded-xl bg-gradient-to-r from-sky-500 to-blue-600 text-white font-semibold text-sm">
+                    Join the Space Tourism Society
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="relative pt-32 pb-20 lg:pt-44 lg:pb-28 overflow-hidden bg-grid-pattern">
+        <!-- Ambient Radial Glows & Orbital Vector Geometry -->
+        <div class="absolute top-16 left-1/2 -translate-x-1/2 w-[850px] h-[500px] bg-sky-500/10 rounded-full blur-[130px] pointer-events-none"></div>
+        <div class="absolute top-40 right-10 w-[400px] h-[400px] bg-amber-500/10 rounded-full blur-[120px] pointer-events-none"></div>
+        
+        <!-- Decorative Orbital Rings SVG -->
+        <div class="absolute inset-0 flex items-center justify-center pointer-events-none opacity-25 overflow-hidden">
+            <svg class="w-[900px] h-[900px] animate-orbit" viewBox="0 0 800 800" fill="none">
+                <circle cx="400" cy="400" r="320" stroke="#38BDF8" stroke-width="0.75" stroke-dasharray="6 10"/>
+                <circle cx="400" cy="80" r="4" fill="#38BDF8"/>
+            </svg>
+            <svg class="absolute w-[1150px] h-[1150px] animate-orbit-reverse" viewBox="0 0 1100 1100" fill="none">
+                <circle cx="550" cy="550" r="480" stroke="#F59E0B" stroke-width="0.6" stroke-dasharray="2 14"/>
+                <circle cx="1030" cy="550" r="4.5" fill="#F59E0B"/>
+            </svg>
+        </div>
+
+        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <!-- Telemetry Pill -->
+            <div class="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full glass-panel border-sky-400/30 mb-8">
+                <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
+                <span class="font-mono text-xs tracking-wider text-sky-300 uppercase">Pioneering Civilian Spaceflight Since 1996</span>
+            </div>
+
+            <!-- Main Headline -->
+            <h1 class="font-display font-bold text-4xl sm:text-6xl lg:text-7xl tracking-tight text-white max-w-4xl mx-auto leading-[1.08]">
+                Live, Work, and Play <span class="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 via-cyan-200 to-amber-400">Off-World.</span>
+            </h1>
+
+            <!-- Subheadline -->
+            <p class="mt-6 text-base sm:text-xl text-slate-300 max-w-3xl mx-auto leading-relaxed font-normal">
+                For three decades, the Space Tourism Society has united space futurists, architects, designers, and pioneers to open the final frontier to everyone—from immersive Earthbound simulations and analog habitats to commercial orbital stations and beyond.
+            </p>
+
+            <!-- Primary & Secondary CTAs -->
+            <div class="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
+                <a href="#pathways" class="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-8 py-4 rounded-xl bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-400 hover:to-blue-500 text-white font-semibold text-base shadow-xl shadow-sky-500/25 transition-all">
+                    <i data-lucide="compass" class="w-5 h-5"></i>
+                    <span>Explore the Pathways</span>
+                </a>
+                <button onclick="openMembershipModal('Professional / Futurist')" class="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-8 py-4 rounded-xl glass-panel hover:border-amber-400/50 text-white font-semibold text-base transition-all cursor-pointer">
+                    <i data-lucide="sparkles" class="w-5 h-5 text-amber-400"></i>
+                    <span>Become a Member</span>
+                </button>
+            </div>
+
+            <!-- Quick-Stats Bar -->
+            <div class="mt-16 max-w-4xl mx-auto grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div class="glass-panel rounded-2xl p-5 text-center border-slate-800/90">
+                    <div class="font-display font-bold text-2xl sm:text-3xl text-white">30+ Years</div>
+                    <div class="font-mono text-xs text-sky-400 uppercase tracking-wider mt-1">Of Futurist Advocacy</div>
+                </div>
+                <div class="glass-panel rounded-2xl p-5 text-center border-slate-800/90">
+                    <div class="font-display font-bold text-2xl sm:text-3xl text-white">20+ Chapters</div>
+                    <div class="font-mono text-xs text-amber-400 uppercase tracking-wider mt-1">Global Aerospace Hubs</div>
+                </div>
+                <div class="glass-panel rounded-2xl p-5 text-center border-slate-800/90">
+                    <div class="font-display font-bold text-2xl sm:text-3xl text-white">6 Pathways</div>
+                    <div class="font-mono text-xs text-sky-400 uppercase tracking-wider mt-1">From Earth VR to Deep Space</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Interactive "Pathways to Space" Tier Explorer -->
+    <section id="pathways" class="py-20 lg:py-28 relative border-t border-slate-800/70 bg-cosmos/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <!-- Section Header -->
+            <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-12">
+                <div>
+                    <div class="font-mono text-xs uppercase tracking-[0.2em] text-sky-400 mb-2">Interactive Altitude Spectrum</div>
+                    <h2 class="font-display font-bold text-3xl sm:text-4xl lg:text-5xl text-white">Pathways to Space</h2>
+                </div>
+                <p class="text-slate-400 max-w-xl text-sm sm:text-base">
+                    Space tourism isn't a single ticket—it is an expanding ladder of human experience. Select any tier below to explore how the public can experience off-world life today and tomorrow.
+                </p>
+            </div>
+
+            <!-- Interactive Tier Selector Tabs (6 Tiers) -->
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-2.5 mb-8" id="pathwayTabs" role="tablist">
+                <!-- Populated dynamically via JS for clean state sync -->
+            </div>
+
+            <!-- Active Tier Detailed Display Card -->
+            <div id="pathwayDetailCard" class="glass-panel rounded-3xl p-6 sm:p-10 border-sky-500/30 shadow-2xl transition-all duration-300">
+                <!-- Populated dynamically via JS -->
+            </div>
+
+            <!-- Visual Altitude Progress Bar -->
+            <div class="mt-8 glass-panel rounded-2xl p-4 sm:p-5 flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div class="flex items-center gap-3">
+                    <span class="font-mono text-xs text-slate-400 uppercase">Current Telemetry:</span>
+                    <span id="telemetryAltitudeLabel" class="font-mono text-xs sm:text-sm font-semibold text-sky-400">0 km — Terrestrial & Virtual</span>
+                </div>
+                <div class="w-full sm:w-1/2 h-2.5 bg-slate-900 rounded-full overflow-hidden p-0.5 border border-slate-800">
+                    <div id="telemetryProgressBar" class="h-full rounded-full bg-gradient-to-r from-sky-400 via-cyan-300 to-amber-400 transition-all duration-500" style="width: 16.6%;"></div>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button onclick="stepPathway(-1)" class="p-2 rounded-lg bg-slate-800/80 hover:bg-slate-700 text-slate-200 transition-colors cursor-pointer" title="Previous Tier">
+                        <i data-lucide="chevron-left" class="w-4 h-4"></i>
+                    </button>
+                    <button onclick="stepPathway(1)" class="p-2 rounded-lg bg-slate-800/80 hover:bg-slate-700 text-slate-200 transition-colors cursor-pointer" title="Next Tier">
+                        <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About & Philosophy Section -->
+    <section id="mission" class="py-20 lg:py-28 relative border-t border-slate-800/70">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                <!-- Left Column: Manifesto -->
+                <div class="lg:col-span-6 space-y-6">
+                    <div class="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-[0.2em] text-amber-400">
+                        <i data-lucide="orbit" class="w-4 h-4"></i>
+                        <span>Our Philosophy</span>
+                    </div>
+                    <h2 class="font-display font-bold text-3xl sm:text-4xl lg:text-5xl text-white leading-tight">
+                        Space Isn't Just for Government Astronauts.
+                    </h2>
+                    <p class="text-slate-300 text-base sm:text-lg leading-relaxed">
+                        Founded in 1996, the Space Tourism Society champions a bold premise: for humanity to truly become a multi-planet species, space must become a vibrant destination for hospitality, entertainment, architecture, sports, art, and everyday human culture.
+                    </p>
+                    <p class="text-slate-400 text-sm sm:text-base leading-relaxed">
+                        While rocket engineers solve propulsion, STS brings together visionary architects, theme-park imagineers, cruise-line executives, filmmakers, and policy leaders to design what people actually <em>do</em> once they arrive in orbit and on the Moon.
+                    </p>
+
+                    <div class="pt-2 flex flex-wrap gap-3">
+                        <span class="px-3.5 py-1.5 rounded-lg bg-sky-500/10 border border-sky-500/20 text-sky-300 font-mono text-xs">Space Architecture</span>
+                        <span class="px-3.5 py-1.5 rounded-lg bg-amber-500/10 border border-amber-500/20 text-amber-300 font-mono text-xs">Off-World Hospitality</span>
+                        <span class="px-3.5 py-1.5 rounded-lg bg-purple-500/10 border border-purple-500/20 text-purple-300 font-mono text-xs">Zero-G Recreation</span>
+                        <span class="px-3.5 py-1.5 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-300 font-mono text-xs">Civic Policy</span>
+                    </div>
+                </div>
+
+                <!-- Right Column: 4 Core STS Pillars -->
+                <div class="lg:col-span-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <!-- Pillar 1 -->
+                    <div class="glass-panel glass-panel-hover rounded-2xl p-6">
+                        <div class="w-11 h-11 rounded-xl bg-sky-500/15 border border-sky-400/30 flex items-center justify-center text-sky-400 mb-4">
+                            <i data-lucide="drafting-compass" class="w-5 h-5"></i>
+                        </div>
+                        <h3 class="font-display font-bold text-lg text-white mb-2">Research & Design Concepts</h3>
+                        <p class="text-sm text-slate-400 leading-relaxed">
+                            Developing commercial blueprints for orbital yachts, lunar resorts, zero-gravity sports arenas, and terrestrial spaceports.
+                        </p>
+                    </div>
+
+                    <!-- Pillar 2 -->
+                    <div class="glass-panel glass-panel-hover rounded-2xl p-6">
+                        <div class="w-11 h-11 rounded-xl bg-amber-500/15 border border-amber-400/30 flex items-center justify-center text-amber-400 mb-4">
+                            <i data-lucide="award" class="w-5 h-5"></i>
+                        </div>
+                        <h3 class="font-display font-bold text-lg text-white mb-2">Annual Conference & Orbit Awards</h3>
+                        <p class="text-sm text-slate-400 leading-relaxed">
+                            Convening launch providers, financiers, and entertainment pioneers while honoring breakthroughs with the prestigious Orbit Awards.
+                        </p>
+                    </div>
+
+                    <!-- Pillar 3 -->
+                    <div class="glass-panel glass-panel-hover rounded-2xl p-6">
+                        <div class="w-11 h-11 rounded-xl bg-cyan-500/15 border border-cyan-400/30 flex items-center justify-center text-cyan-400 mb-4">
+                            <i data-lucide="mic" class="w-5 h-5"></i>
+                        </div>
+                        <h3 class="font-display font-bold text-lg text-white mb-2">Seminars & Speakers Bureau</h3>
+                        <p class="text-sm text-slate-400 leading-relaxed">
+                            Connecting global media, universities, and corporate summits with leading space futurists, analog astronauts, and commercial flyers.
+                        </p>
+                    </div>
+
+                    <!-- Pillar 4 -->
+                    <div class="glass-panel glass-panel-hover rounded-2xl p-6">
+                        <div class="w-11 h-11 rounded-xl bg-indigo-500/15 border border-indigo-400/30 flex items-center justify-center text-indigo-400 mb-4">
+                            <i data-lucide="book-open" class="w-5 h-5"></i>
+                        </div>
+                        <h3 class="font-display font-bold text-lg text-white mb-2">Publications & Media</h3>
+                        <p class="text-sm text-slate-400 leading-relaxed">
+                            Authoring industry whitepapers, market forecasts, and educational media inspiring the next generation of off-world citizens.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Interactive Global Chapters Explorer -->
+    <section id="chapters" class="py-20 lg:py-28 relative border-t border-slate-800/70 bg-cosmos/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
+                <div>
+                    <div class="font-mono text-xs uppercase tracking-[0.2em] text-sky-400 mb-2">Worldwide Network</div>
+                    <h2 class="font-display font-bold text-3xl sm:text-4xl text-white">Global STS Chapters</h2>
+                </div>
+                <p class="text-slate-400 max-w-lg text-sm sm:text-base">
+                    From Silicon Valley to Seoul, STS chapters organize local salons, analog mission prep, and public space education across five continents.
+                </p>
+            </div>
+
+            <!-- Region Filter Bar -->
+            <div class="flex flex-wrap items-center gap-2 mb-8" id="chapterFilters">
+                <button data-region="All" class="chapter-filter-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-medium bg-sky-500 text-white shadow-lg shadow-sky-500/20 transition-all cursor-pointer">
+                    All Regions (19)
+                </button>
+                <button data-region="North America" class="chapter-filter-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-medium glass-panel text-slate-300 hover:text-white transition-all cursor-pointer">
+                    North America (7)
+                </button>
+                <button data-region="Europe" class="chapter-filter-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-medium glass-panel text-slate-300 hover:text-white transition-all cursor-pointer">
+                    Europe (4)
+                </button>
+                <button data-region="Asia-Pacific" class="chapter-filter-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-medium glass-panel text-slate-300 hover:text-white transition-all cursor-pointer">
+                    Asia-Pacific (4)
+                </button>
+                <button data-region="Latin America" class="chapter-filter-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-medium glass-panel text-slate-300 hover:text-white transition-all cursor-pointer">
+                    Latin America (2)
+                </button>
+                <button data-region="Middle East & Africa" class="chapter-filter-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-medium glass-panel text-slate-300 hover:text-white transition-all cursor-pointer">
+                    Middle East & Africa (2)
+                </button>
+            </div>
+
+            <!-- Chapters Grid -->
+            <div id="chaptersGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <!-- Populated dynamically via JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Flagship Event (STC & Orbit Awards) + Membership Section -->
+    <section id="conference" class="py-20 lg:py-28 relative border-t border-slate-800/70">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <!-- Flagship Event Banner -->
+            <div class="glass-panel rounded-3xl p-8 sm:p-12 border-amber-500/30 relative overflow-hidden mb-24">
+                <div class="absolute -right-20 -top-20 w-80 h-80 bg-amber-500/15 rounded-full blur-[90px] pointer-events-none"></div>
+                <div class="absolute -left-20 -bottom-20 w-80 h-80 bg-sky-500/15 rounded-full blur-[90px] pointer-events-none"></div>
+
+                <div class="relative grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                    <div class="lg:col-span-8 space-y-4">
+                        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/15 border border-amber-400/30 text-amber-300 font-mono text-xs uppercase tracking-wider">
+                            <i data-lucide="trophy" class="w-3.5 h-3.5"></i>
+                            <span>Annual Flagship Gathering</span>
+                        </div>
+                        <h2 class="font-display font-bold text-3xl sm:text-4xl text-white">
+                            Space Tourism Conference & Orbit Awards
+                        </h2>
+                        <p class="text-slate-300 text-base leading-relaxed max-w-2xl">
+                            Where aerospace meets entertainment, luxury hospitality, and venture capital. Join flight providers, commercial station architects, analog mission commanders, and Hollywood futurists for two days of keynotes, deal-making, and the prestigious Orbit Awards Gala.
+                        </p>
+                        <div class="flex flex-wrap gap-6 pt-2 text-sm text-slate-300 font-mono">
+                            <div class="flex items-center gap-2">
+                                <i data-lucide="map-pin" class="w-4 h-4 text-sky-400"></i>
+                                <span>Los Angeles, CA & Virtual Simulcast</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <i data-lucide="users" class="w-4 h-4 text-amber-400"></i>
+                                <span>500+ Industry Pioneers</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="lg:col-span-4 flex flex-col sm:flex-row lg:flex-col gap-3">
+                        <button onclick="openConferenceModal()" class="w-full py-4 px-6 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-950 font-bold text-sm shadow-lg shadow-amber-500/20 transition-all cursor-pointer flex items-center justify-center gap-2">
+                            <span>Request VIP Pass / Speaker Info</span>
+                            <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                        </button>
+                        <button onclick="showToast('Orbit Awards Nominations', 'Nomination guidelines for Commercial Flight, Space Architecture, and Media categories have been sent to your session log.')" class="w-full py-3.5 px-6 rounded-xl glass-panel hover:border-slate-600 text-slate-200 font-medium text-sm transition-all cursor-pointer">
+                            Explore Orbit Award Categories
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Membership Tiers -->
+            <div id="membership" class="scroll-mt-28">
+                <div class="text-center max-w-3xl mx-auto mb-14">
+                    <div class="font-mono text-xs uppercase tracking-[0.2em] text-sky-400 mb-2">Join the Vanguard</div>
+                    <h2 class="font-display font-bold text-3xl sm:text-4xl lg:text-5xl text-white">STS Membership</h2>
+                    <p class="mt-4 text-slate-400 text-base">
+                        Support civilian space advocacy, connect with commercial flight pioneers, and gain priority access to analog expeditions and global events.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto">
+                    <!-- Tier 1: Explorer / Student -->
+                    <div class="glass-panel glass-panel-hover rounded-3xl p-8 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between mb-4">
+                                <span class="font-mono text-xs uppercase tracking-wider text-sky-400">Tier 01</span>
+                                <span class="px-2.5 py-1 rounded-md bg-slate-800 text-slate-300 font-mono text-xs">Academic & Enthusiast</span>
+                            </div>
+                            <h3 class="font-display font-bold text-2xl text-white">Explorer / Student</h3>
+                            <div class="mt-4 flex items-baseline gap-1">
+                                <span class="font-display font-bold text-4xl text-white">$45</span>
+                                <span class="text-slate-400 text-sm">/ year</span>
+                            </div>
+                            <p class="mt-3 text-sm text-slate-400">
+                                Ideal for students, educators, and space enthusiasts starting their off-world journey.
+                            </p>
+                            <ul class="mt-6 space-y-3 text-sm text-slate-300">
+                                <li class="flex items-start gap-2.5">
+                                    <i data-lucide="check" class="w-4 h-4 text-sky-400 shrink-0 mt-0.5"></i>
+                                    <span>Official STS Digital Membership Credentials</span>
+                                </li>
+                                <li class="flex items-start gap-2.5">
+                                    <i data-lucide="check" class="w-4 h-4 text-sky-400 shrink-0 mt-0.5"></i>
+                                    <span>Local Chapter Access & Virtual Futurist Salons</span>
+                                </li>
+                                <li class="flex items-start gap-2.5">
+                                    <i data-lucide="check" class="w-4 h-4 text-sky-400 shrink-0 mt-0.5"></i>
+                                    <span>Quarterly Space Tourism Dispatch & Research Briefs</span>
+                                </li>
+                                <li class="flex items-start gap-2.5">
+                                    <i data-lucide="check" class="w-4 h-4 text-sky-400 shrink-0 mt-0.5"></i>
+                                    <span>Discounted Student Rate for Annual Conference</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <button onclick="openMembershipModal('Explorer / Student', '$45/yr')" class="mt-8 w-full py-3.5 px-5 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-semibold text-sm transition-colors cursor-pointer">
+                            Select Explorer Tier
+                        </button>
+                    </div>
+
+                    <!-- Tier 2: Professional / Futurist (Featured) -->
+                    <div class="glass-panel rounded-3xl p-8 flex flex-col justify-between border-sky-400/50 shadow-2xl shadow-sky-500/10 relative">
+                        <div class="absolute -top-3.5 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-gradient-to-r from-sky-500 to-blue-600 text-white font-mono text-[11px] font-semibold uppercase tracking-wider shadow-lg">
+                            Most Popular
+                        </div>
+                        <div>
+                            <div class="flex items-center justify-between mb-4">
+                                <span class="font-mono text-xs uppercase tracking-wider text-sky-400">Tier 02</span>
+                                <span class="px-2.5 py-1 rounded-md bg-sky-500/15 text-sky-300 font-mono text-xs">Industry & Pioneers</span>
+                            </div>
+                            <h3 class="font-display font-bold text-2xl text-white">Professional / Futurist</h3>
+                            <div class="mt-4 flex items-baseline gap-1">
+                                <span class="font-display font-bold text-4xl text-white">$150</span>
+                                <span class="text-slate-400 text-sm">/ year</span>
+                            </div>
+                            <p class="mt-3 text-sm text-slate-300">
+                                Built for aerospace professionals, designers, writers, and prospective spaceflight participants.
+                            </p>
+                            <ul class="mt-6 space-y-3 text-sm text-slate-200">
+                                <li class="flex items-start gap-2.5">
+                                    <i data-lucide="check" class="w-4 h-4 text-sky-400 shrink-0 mt-0.5"></i>
+                                    <span>All Explorer Tier benefits + Voting Rights</span>
+                                </li>
+                                <li class="flex items-start gap-2.5">
+                                    <i data-lucide="check" class="w-4 h-4 text-sky-400 shrink-0 mt-0.5"></i>
+                                    <span>Priority Registration for Analog Astronaut & Zero-G Group Flights</span>
+                                </li>
+                                <li class="flex items-start gap-2.5">
+                                    <i data-lucide="check" class="w-4 h-4 text-sky-400 shrink-0 mt-0.5"></i>
+                                    <span>Eligibility to Lead or Launch a Regional STS Chapter</span>
+                                </li>
+                                <li class="flex items-start gap-2.5">
+                                    <i data-lucide="check" class="w-4 h-4 text-sky-400 shrink-0 mt-0.5"></i>
+                                    <span>25% VIP Discount on Space Tourism Conference & Orbit Awards</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <button onclick="openMembershipModal('Professional / Futurist', '$150/yr')" class="mt-8 w-full py-3.5 px-5 rounded-xl bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-400 hover:to-blue-500 text-white font-semibold text-sm shadow-lg shadow-sky-500/25 transition-all cursor-pointer">
+                            Join as Futurist
+                        </button>
+                    </div>
+
+                    <!-- Tier 3: Corporate / Patron -->
+                    <div class="glass-panel glass-panel-hover rounded-3xl p-8 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between mb-4">
+                                <span class="font-mono text-xs uppercase tracking-wider text-amber-400">Tier 03</span>
+                                <span class="px-2.5 py-1 rounded-md bg-amber-500/15 text-amber-300 font-mono text-xs">Enterprise & Benefactor</span>
+                            </div>
+                            <h3 class="font-display font-bold text-2xl text-white">Corporate / Patron</h3>
+                            <div class="mt-4 flex items-baseline gap-1">
+                                <span class="font-display font-bold text-4xl text-white">$1,250</span>
+                                <span class="text-slate-400 text-sm">/ year</span>
+                            </div>
+                            <p class="mt-3 text-sm text-slate-400">
+                                Strategic partnership for spaceflight companies, design studios, venture funds, and visionary patrons.
+                            </p>
+                            <ul class="mt-6 space-y-3 text-sm text-slate-300">
+                                <li class="flex items-start gap-2.5">
+                                    <i data-lucide="check" class="w-4 h-4 text-amber-400 shrink-0 mt-0.5"></i>
+                                    <span>Logo Placement in Official STS Partner Directory</span>
+                                </li>
+                                <li class="flex items-start gap-2.5">
+                                    <i data-lucide="check" class="w-4 h-4 text-amber-400 shrink-0 mt-0.5"></i>
+                                    <span>2 Complimentary VIP Passes to Annual Conference & Gala</span>
+                                </li>
+                                <li class="flex items-start gap-2.5">
+                                    <i data-lucide="check" class="w-4 h-4 text-amber-400 shrink-0 mt-0.5"></i>
+                                    <span>Advisory Roundtable Access with STS Board of Governors</span>
+                                </li>
+                                <li class="flex items-start gap-2.5">
+                                    <i data-lucide="check" class="w-4 h-4 text-amber-400 shrink-0 mt-0.5"></i>
+                                    <span>Custom Executive Briefings & Speakers Bureau Priority</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <button onclick="openMembershipModal('Corporate / Patron', '$1,250/yr')" class="mt-8 w-full py-3.5 px-5 rounded-xl glass-panel hover:border-amber-400/50 text-amber-300 font-semibold text-sm transition-all cursor-pointer">
+                            Apply for Patronage
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modern Footer -->
+    <footer class="border-t border-slate-800/80 bg-[#03050C] pt-16 pb-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 pb-12 border-b border-slate-800/80">
+                <!-- Brand & Newsletter -->
+                <div class="lg:col-span-5 space-y-5">
+                    <div class="flex items-center gap-3">
+                        <div class="w-9 h-9 rounded-xl bg-sky-500/15 border border-sky-400/30 flex items-center justify-center">
+                            <svg class="w-5 h-5 text-sky-400" viewBox="0 0 32 32" fill="none">
+                                <circle cx="16" cy="16" r="6" stroke="currentColor" stroke-width="2"/>
+                                <ellipse cx="16" cy="16" rx="14" ry="5" transform="rotate(-28 16 16)" stroke="#F59E0B" stroke-width="1.75"/>
+                            </svg>
+                        </div>
+                        <span class="font-display font-bold text-lg text-white">SPACE TOURISM SOCIETY</span>
+                    </div>
+                    <p class="text-sm text-slate-400 leading-relaxed max-w-md">
+                        A 501(c)(3) non-profit organization founded in 1996 dedicated to accelerating the commercial space tourism industry so humanity can live, work, and play off-world.
+                    </p>
+                    <form id="newsletterForm" class="flex flex-col sm:flex-row gap-2 max-w-md pt-1">
+                        <input type="email" required placeholder="Enter your email for mission dispatches..." class="flex-1 px-4 py-2.5 rounded-xl bg-slate-900/90 border border-slate-700/80 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-sky-400">
+                        <button type="submit" class="px-5 py-2.5 rounded-xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-semibold text-sm transition-colors cursor-pointer shrink-0">
+                            Subscribe
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Leadership & Governance -->
+                <div class="lg:col-span-2 space-y-3">
+                    <h4 class="font-mono text-xs uppercase tracking-wider text-slate-300 font-semibold">Governance</h4>
+                    <ul class="space-y-2.5 text-sm text-slate-400">
+                        <li><a href="#mission" onclick="showToast('Board of Directors', 'Viewing STS Executive Board & Founder John Spencer leadership roster.')" class="hover:text-sky-400 transition-colors">Board of Directors</a></li>
+                        <li><a href="#mission" onclick="showToast('Board of Governors', 'Viewing STS Board of Governors & Aerospace Advisory Council.')" class="hover:text-sky-400 transition-colors">Board of Governors</a></li>
+                        <li><a href="#chapters" class="hover:text-sky-400 transition-colors">Global Chapters</a></li>
+                        <li><a href="#membership" class="hover:text-sky-400 transition-colors">Sponsors & Partners</a></li>
+                    </ul>
+                </div>
+
+                <!-- Programs & Media -->
+                <div class="lg:col-span-2 space-y-3">
+                    <h4 class="font-mono text-xs uppercase tracking-wider text-slate-300 font-semibold">Programs</h4>
+                    <ul class="space-y-2.5 text-sm text-slate-400">
+                        <li><a href="#pathways" class="hover:text-sky-400 transition-colors">6 Pathways to Space</a></li>
+                        <li><a href="#conference" class="hover:text-sky-400 transition-colors">Space Tourism Conference</a></li>
+                        <li><a href="#conference" class="hover:text-sky-400 transition-colors">The Orbit Awards</a></li>
+                        <li><a href="#mission" onclick="showToast('Speakers Bureau', 'Request an STS futurist or analog astronaut for your upcoming event.')" class="hover:text-sky-400 transition-colors">Speakers Bureau</a></li>
+                    </ul>
+                </div>
+
+                <!-- Resources & Contact -->
+                <div class="lg:col-span-3 space-y-3">
+                    <h4 class="font-mono text-xs uppercase tracking-wider text-slate-300 font-semibold">Resources & Contact</h4>
+                    <ul class="space-y-2.5 text-sm text-slate-400">
+                        <li><a href="#pathways" class="hover:text-sky-400 transition-colors">Analog Mission Directory</a></li>
+                        <li><a href="#pathways" class="hover:text-sky-400 transition-colors">Space Architecture Archive</a></li>
+                        <li><button onclick="openChapterModal()" class="hover:text-sky-400 transition-colors text-left cursor-pointer">Start an STS Chapter</button></li>
+                        <li class="pt-1 font-mono text-xs text-slate-500">Los Angeles, CA • info@spacetourismsociety.org</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
+                <p>© 1996–2026 Space Tourism Society. All rights reserved.</p>
+                <div class="flex items-center gap-6">
+                    <span class="font-mono text-sky-400/80">STATUS: ALL SYSTEMS NOMINAL</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Interactive Membership / Action Modal -->
+    <div id="actionModal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md">
+        <div class="glass-panel border-sky-400/30 rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl relative animate-fadeIn">
+            <button onclick="closeModal()" class="absolute top-5 right-5 p-2 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-slate-300 hover:text-white transition-colors cursor-pointer" aria-label="Close modal">
+                <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-sky-500/15 border border-sky-400/30 text-sky-300 font-mono text-xs uppercase mb-4">
+                <i data-lucide="rocket" class="w-3.5 h-3.5"></i>
+                <span id="modalBadge">STS Onboarding</span>
+            </div>
+
+            <h3 id="modalTitle" class="font-display font-bold text-2xl text-white">Join the Space Tourism Society</h3>
+            <p id="modalSubtitle" class="text-sm text-slate-400 mt-1.5">Complete your pre-registration to connect with your regional chapter and unlock member benefits.</p>
+
+            <form id="modalForm" class="mt-6 space-y-4">
+                <div>
+                    <label class="block font-mono text-xs uppercase text-slate-300 mb-1.5">Full Name</label>
+                    <input type="text" id="applicantName" required placeholder="e.g., Dr. Elena Vance" class="w-full px-4 py-3 rounded-xl bg-slate-900/90 border border-slate-700 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-sky-400">
+                </div>
+                <div>
+                    <label class="block font-mono text-xs uppercase text-slate-300 mb-1.5">Email Address</label>
+                    <input type="email" id="applicantEmail" required placeholder="elena@orbitalstudios.space" class="w-full px-4 py-3 rounded-xl bg-slate-900/90 border border-slate-700 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-sky-400">
+                </div>
+                <div id="modalDynamicField">
+                    <label class="block font-mono text-xs uppercase text-slate-300 mb-1.5">Selected Pathway / Tier</label>
+                    <select id="applicantTier" class="w-full px-4 py-3 rounded-xl bg-slate-900/90 border border-slate-700 text-sm text-white focus:outline-none focus:border-sky-400">
+                        <option value="Explorer / Student ($45/yr)">Explorer / Student ($45/yr)</option>
+                        <option value="Professional / Futurist ($150/yr)" selected>Professional / Futurist ($150/yr)</option>
+                        <option value="Corporate / Patron ($1,250/yr)">Corporate / Patron ($1,250/yr)</option>
+                        <option value="Start a New Regional Chapter">Start a New Regional Chapter</option>
+                        <option value="Space Tourism Conference VIP Pass">Space Tourism Conference VIP Pass</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block font-mono text-xs uppercase text-slate-300 mb-1.5">Primary Interest Area</label>
+                    <input type="text" placeholder="e.g., Analog Missions, Space Architecture, Sub-Orbital Flight..." class="w-full px-4 py-3 rounded-xl bg-slate-900/90 border border-slate-700 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-sky-400">
+                </div>
+                <div class="pt-2">
+                    <button type="submit" class="w-full py-3.5 px-6 rounded-xl bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-400 hover:to-blue-500 text-white font-semibold text-sm shadow-lg shadow-sky-500/25 transition-all cursor-pointer">
+                        Confirm & Submit Application
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Interactive Data & Application Logic -->
+    <script>
+        // 1. Data for the 6 Pathways to Space
+        const pathwaysData = [
+            {
+                id: 0,
+                shortTitle: "1. Earthbound VR & Media",
+                title: "Earthbound Simulations & Media",
+                altitude: "0 km • Terrestrial & Virtual",
+                costTier: "$ • Accessible Today",
+                accentColor: "sky",
+                icon: "gamepad-2",
+                tagline: "Experience the cosmos without leaving Earth's surface.",
+                description: "The gateway for billions of space enthusiasts. Through photorealistic space video games, interactive science museums, space-themed resorts, IMAX/cinema productions, and multi-sensory Virtual Reality immersions, anyone can pilot a starship or walk across Shackleton Crater today.",
+                highlights: [
+                    "Full-motion VR spacewalk & orbital docking simulators",
+                    "Interactive science center spaceflight domes & planetariums",
+                    "Next-gen orbital & planetary exploration video games",
+                    "Space-themed hospitality venues & film/TV worlds"
+                ],
+                partners: ["Science Museums", "VR Sim Studios", "Theme Park Imagineers", "Space Media"]
+            },
+            {
+                id: 1,
+                shortTitle: "2. Analog Astronaut",
+                title: "Analog Astronaut Missions",
+                altitude: "Remote Earth Habitats • Mars/Lunar Sim",
+                costTier: "$$ • Expeditionary",
+                accentColor: "amber",
+                icon: "tent",
+                tagline: "Live and work like an off-world crew in Earth's most extreme terrains.",
+                description: "Step into the boots of a planetary explorer for one to two weeks inside isolated terrestrial habitats in Utah deserts, volcanic lava tubes, or arctic stations. Analog astronauts wear pressurized sim-suits, manage closed-loop life support, conduct geology fieldwork, and experience communication delays with Mission Control.",
+                highlights: [
+                    "7-to-14 day crewed rotations in Lunar & Mars habitats",
+                    "Simulated Extra-Vehicular Activities (EVAs) in rugged terrain",
+                    "Hydroponics, robotics, and human-factors research",
+                    "Team leadership & psychological resilience training"
+                ],
+                partners: ["MDRS (Mars Desert Research Station)", "HI-SEAS", "LunAres", "SAM Biosphere 2"]
+            },
+            {
+                id: 2,
+                shortTitle: "3. Zero-G Parabolic",
+                title: "Zero-G Parabolic Flights",
+                altitude: "10 km (32,000 ft) • Microgravity Arcs",
+                costTier: "$$$ • Commercial Aviation",
+                accentColor: "cyan",
+                icon: "plane",
+                tagline: "Float effortlessly in true weightlessness aboard specialized aircraft.",
+                description: "Aboard modified jetliners flying steep parabolic arcs, passengers experience 20 to 30 seconds of genuine lunar gravity, Martian gravity, and full zero-gravity per parabola—allowing you to somersault mid-air, chase floating water spheres, and test zero-G choreography.",
+                highlights: [
+                    "15+ parabolic maneuvers delivering true microgravity",
+                    "Lunar (1/6g) and Martian (3/8g) gravity simulations",
+                    "Zero-G sports, photography, and microgravity R&D",
+                    "No astronaut medical clearance required for general flyers"
+                ],
+                partners: ["Zero-G Corporation", "Novespace (Air Zero G)", "Aurora Aerospace"]
+            },
+            {
+                id: 3,
+                shortTitle: "4. Stratospheric Balloon",
+                title: "Stratospheric Balloon Flights",
+                altitude: "30–40 km (100,000+ ft) • Near-Space",
+                costTier: "$$$$ • Luxury Ascent",
+                accentColor: "indigo",
+                icon: "cloud-sun",
+                tagline: "A gentle, multi-hour voyage to the edge of space in panoramic luxury.",
+                description: "Ascending smoothly beneath a giant zero-pressure stratospheric balloon, pressurized luxury capsules carry guests above 99% of Earth's atmosphere. Enjoy six hours of serene silence, fine dining, and uninterrupted 360-degree views of Earth's curvature against the pitch-black cosmos.",
+                highlights: [
+                    "Gentle 2-hour ascent & 2-hour float at ~100,000 feet",
+                    "Pressurized shirt-sleeve cabin with panoramic windows",
+                    "Zero G-force stress—accessible to almost all ages",
+                    "Witness the thin blue line of Earth's atmosphere"
+                ],
+                partners: ["Space Perspective", "World View", "Zephalto", "Halo Space"]
+            },
+            {
+                id: 4,
+                shortTitle: "5. Sub-Orbital Flight",
+                title: "Sub-Orbital Spaceflight",
+                altitude: "80–107 km • Crossing the Kármán Line",
+                costTier: "$$$$$ • Rocket-Powered",
+                accentColor: "sky",
+                icon: "flame",
+                tagline: "Experience Mach 3+ rocket thrust, several minutes of weightlessness, and astronaut wings.",
+                description: "Strap into a reusable rocket plane or autonomous capsule for an adrenaline-charged launch past the boundary of space. Unbuckle at apogee to float weightlessly while gazing down at entire continents and coastlines before gliding or parachuting back to the spaceport.",
+                highlights: [
+                    "3G–4G supersonic rocket boost to the edge of space",
+                    "3 to 5 minutes of unstrapped weightlessness in orbit-like views",
+                    "Official commercial astronaut wings & spaceport training",
+                    "Rapid turnaround reusable spacecraft architectures"
+                ],
+                partners: ["Virgin Galactic", "Blue Origin (New Shepard)", "Rocket Lab / Future Suborbital"]
+            },
+            {
+                id: 5,
+                shortTitle: "6. Orbital & Beyond",
+                title: "Orbital Stations & Beyond",
+                altitude: "400+ km (LEO) to 384,400 km (Moon)",
+                costTier: "$$$$$$ • Multi-Day Off-World Living",
+                accentColor: "amber",
+                icon: "globe",
+                tagline: "Live, work, and vacation aboard orbital habitats, space yachts, and lunar outposts.",
+                description: "The pinnacle of space tourism: launching into Low Earth Orbit for multi-day or multi-week stays aboard the International Space Station and next-generation commercial space stations—followed by cislunar flybys and surface stays at future lunar resorts.",
+                highlights: [
+                    "16 sunrises and sunsets every 24 hours at 28,000 km/h",
+                    "Private commercial modules, orbital yachts & zero-G lounges",
+                    "Citizen science, orbital filmmaking & off-world retreats",
+                    "Paving the way for cislunar cruises & lunar base hospitality"
+                ],
+                partners: ["Axiom Space", "SpaceX Dragon", "Orbital Reef", "Starlab", "Vast Haven-1"]
+            }
+        ];
+
+        // 2. Data for the 19 Global Chapters from STS
+        const chaptersData = [
+            { name: "Silicon Valley", region: "North America", country: "USA", focus: "Commercial Space Tech & Venture" },
+            { name: "San Diego", region: "North America", country: "USA", focus: "Aerospace Engineering & Outreach" },
+            { name: "Monterey Bay", region: "North America", country: "USA", focus: "Ocean-to-Orbit Analog Research" },
+            { name: "Boise", region: "North America", country: "USA", focus: "Pacific Northwest Futurist Hub" },
+            { name: "Florida", region: "North America", country: "USA", focus: "Space Coast Launch Operations" },
+            { name: "UNLV (Las Vegas)", region: "North America", country: "USA", focus: "Space Hospitality & University Chapter" },
+            { name: "Canada", region: "North America", country: "Canada", focus: "Robotics, Arctic Analogs & Policy" },
+            { name: "United Kingdom", region: "Europe", country: "UK", focus: "European Spaceports & Finance" },
+            { name: "Germany", region: "Europe", country: "Germany", focus: "Orbital Systems & Space Architecture" },
+            { name: "Italy", region: "Europe", country: "Italy", focus: "Habitation Design & Luxury Space" },
+            { name: "Russia", region: "Europe", country: "Russia", focus: "Human Spaceflight Heritage" },
+            { name: "India", region: "Asia-Pacific", country: "India", focus: "Emerging Launch & Youth Advocacy" },
+            { name: "Korea", region: "Asia-Pacific", country: "South Korea", focus: "Space Media, VR & Lunar Tech" },
+            { name: "Malaysia", region: "Asia-Pacific", country: "Malaysia", focus: "ASEAN Space Education & Outreach" },
+            { name: "Pakistan", region: "Asia-Pacific", country: "Pakistan", focus: "Academic & Student Space Programs" },
+            { name: "Brazil", region: "Latin America", country: "Brazil", focus: "Equatorial Launch & Analog Habitats" },
+            { name: "Mexico", region: "Latin America", country: "Mexico", focus: "Latin American Space Tourism Network" },
+            { name: "Iran", region: "Middle East & Africa", country: "Iran", focus: "Astrophysics & Futurist Seminars" },
+            { name: "Nigeria", region: "Middle East & Africa", country: "Nigeria", focus: "African Space Economy & STEM" }
+        ];
+
+        let currentPathwayIndex = 0;
+
+        // Render Pathway Tabs & Detail View
+        function renderPathways() {
+            const tabsContainer = document.getElementById('pathwayTabs');
+            const detailCard = document.getElementById('pathwayDetailCard');
+            const telemetryLabel = document.getElementById('telemetryAltitudeLabel');
+            const telemetryBar = document.getElementById('telemetryProgressBar');
+
+            // Render Tabs
+            tabsContainer.innerHTML = pathwaysData.map((tier, idx) => {
+                const isActive = idx === currentPathwayIndex;
+                return `
+                    <button 
+                        onclick="selectPathway(${idx})"
+                        role="tab"
+                        aria-selected="${isActive}"
+                        class="p-3.5 rounded-2xl text-left transition-all cursor-pointer border ${
+                            isActive 
+                            ? 'bg-gradient-to-br from-sky-500/20 to-blue-600/20 border-sky-400 text-white shadow-lg shadow-sky-500/15' 
+                            : 'glass-panel border-slate-800/80 text-slate-400 hover:text-slate-200 hover:border-slate-700'
+                        }"
+                    >
+                        <div class="flex items-center justify-between mb-1.5">
+                            <span class="font-mono text-[11px] ${isActive ? 'text-sky-400' : 'text-slate-500'}">TIER 0${idx + 1}</span>
+                            <i data-lucide="${tier.icon}" class="w-4 h-4 ${isActive ? 'text-amber-400' : 'text-slate-500'}"></i>
+                        </div>
+                        <div class="font-display font-semibold text-xs sm:text-sm leading-snug">
+                            ${tier.shortTitle.replace(/^\d+\.\s*/, '')}
+                        </div>
+                    </button>
+                `;
+            }).join('');
+
+            // Render Active Tier Content
+            const active = pathwaysData[currentPathwayIndex];
+            detailCard.innerHTML = `
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                    <!-- Left Info -->
+                    <div class="lg:col-span-7 space-y-5">
+                        <div class="flex flex-wrap items-center gap-2.5">
+                            <span class="px-3 py-1 rounded-full bg-sky-500/15 border border-sky-400/30 text-sky-300 font-mono text-xs">
+                                ${active.altitude}
+                            </span>
+                            <span class="px-3 py-1 rounded-full bg-amber-500/15 border border-amber-400/30 text-amber-300 font-mono text-xs">
+                                ${active.costTier}
+                            </span>
+                        </div>
+
+                        <div>
+                            <h3 class="font-display font-bold text-2xl sm:text-3xl lg:text-4xl text-white">
+                                ${active.title}
+                            </h3>
+                            <p class="mt-2 font-medium text-sky-300 text-base sm:text-lg">
+                                ${active.tagline}
+                            </p>
+                        </div>
+
+                        <p class="text-slate-300 text-sm sm:text-base leading-relaxed">
+                            ${active.description}
+                        </p>
+
+                        <!-- Ecosystem / Partners Tags -->
+                        <div class="pt-2">
+                            <span class="block font-mono text-xs uppercase tracking-wider text-slate-400 mb-2.5">Key Ecosystem & Vehicles</span>
+                            <div class="flex flex-wrap gap-2">
+                                ${active.partners.map(p => `
+                                    <span class="px-3 py-1.5 rounded-lg bg-slate-900/90 border border-slate-700/80 text-xs font-mono text-slate-200">
+                                        ${p}
+                                    </span>
+                                `).join('')}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Highlights Box -->
+                    <div class="lg:col-span-5 bg-slate-950/70 border border-slate-800/90 rounded-2xl p-6 space-y-5">
+                        <div class="flex items-center gap-3 border-b border-slate-800 pb-4">
+                            <div class="w-10 h-10 rounded-xl bg-sky-500/15 border border-sky-400/30 flex items-center justify-center text-sky-400">
+                                <i data-lucide="${active.icon}" class="w-5 h-5"></i>
+                            </div>
+                            <div>
+                                <div class="font-mono text-xs text-slate-400 uppercase">Experience Profile</div>
+                                <div class="font-display font-bold text-white">What You'll Experience</div>
+                            </div>
+                        </div>
+
+                        <ul class="space-y-3.5">
+                            ${active.highlights.map(item => `
+                                <li class="flex items-start gap-3 text-sm text-slate-300">
+                                    <i data-lucide="sparkles" class="w-4 h-4 text-amber-400 shrink-0 mt-0.5"></i>
+                                    <span>${item}</span>
+                                </li>
+                            `).join('')}
+                        </ul>
+
+                        <div class="pt-2">
+                            <button onclick="openPathwayInquiry('${active.title}')" class="w-full py-3 px-4 rounded-xl bg-sky-500/15 hover:bg-sky-500/25 border border-sky-400/40 text-sky-300 font-semibold text-xs sm:text-sm transition-all cursor-pointer flex items-center justify-center gap-2">
+                                <span>Connect with STS ${active.shortTitle.replace(/^\d+\.\s*/, '')} Group</span>
+                                <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            // Update Telemetry Footer
+            telemetryLabel.textContent = active.altitude;
+            const progressPercent = ((currentPathwayIndex + 1) / pathwaysData.length) * 100;
+            telemetryBar.style.width = `${progressPercent}%`;
+
+            // Re-initialize Lucide icons inside dynamic DOM
+            lucide.createIcons();
+        }
+
+        function selectPathway(index) {
+            currentPathwayIndex = index;
+            renderPathways();
+        }
+
+        function stepPathway(delta) {
+            currentPathwayIndex = (currentPathwayIndex + delta + pathwaysData.length) % pathwaysData.length;
+            renderPathways();
+        }
+
+        // Render Global Chapters Grid
+        function renderChapters(regionFilter = 'All') {
+            const grid = document.getElementById('chaptersGrid');
+            const filtered = regionFilter === 'All' 
+                ? chaptersData 
+                : chaptersData.filter(c => c.region === regionFilter);
+
+            const cardsHtml = filtered.map(chapter => `
+                <div class="glass-panel glass-panel-hover rounded-2xl p-5 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between gap-2 mb-3">
+                            <span class="font-mono text-[11px] uppercase tracking-wider text-sky-400">${chapter.region}</span>
+                            <span class="w-2 h-2 rounded-full bg-emerald-400" title="Active Chapter"></span>
+                        </div>
+                        <h3 class="font-display font-bold text-lg text-white">${chapter.name}</h3>
+                        <p class="text-xs text-slate-400 mt-1">${chapter.focus}</p>
+                    </div>
+                    <div class="mt-4 pt-3 border-t border-slate-800/80 flex items-center justify-between">
+                        <span class="font-mono text-[11px] text-slate-500">${chapter.country}</span>
+                        <button onclick="showToast('STS ${chapter.name} Chapter', 'Chapter contact details and upcoming local meetup schedule unlocked.')" class="text-xs font-medium text-sky-400 hover:text-sky-300 flex items-center gap-1 cursor-pointer">
+                            <span>Connect</span>
+                            <i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i>
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+
+            // Append "Start a Chapter" Card
+            const startChapterCard = `
+                <div onclick="openChapterModal()" class="rounded-2xl p-5 border border-dashed border-amber-400/40 bg-amber-500/5 hover:bg-amber-500/10 transition-all flex flex-col items-center justify-center text-center cursor-pointer min-h-[168px]">
+                    <div class="w-10 h-10 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center mb-2.5">
+                        <i data-lucide="plus" class="w-5 h-5"></i>
+                    </div>
+                    <h3 class="font-display font-bold text-base text-white">Start a Chapter</h3>
+                    <p class="text-xs text-slate-400 mt-1">Launch an official STS hub in your city or university</p>
+                </div>
+            `;
+
+            grid.innerHTML = cardsHtml + startChapterCard;
+            lucide.createIcons();
+        }
+
+        // Chapter Filter Buttons
+        document.querySelectorAll('.chapter-filter-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.chapter-filter-btn').forEach(b => {
+                    b.classList.remove('bg-sky-500', 'text-white', 'shadow-lg', 'shadow-sky-500/20');
+                    b.classList.add('glass-panel', 'text-slate-300');
+                });
+                btn.classList.remove('glass-panel', 'text-slate-300');
+                btn.classList.add('bg-sky-500', 'text-white', 'shadow-lg', 'shadow-sky-500/20');
+                renderChapters(btn.dataset.region);
+            });
+        });
+
+        // Mobile Navigation Drawer Toggle
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+        document.querySelectorAll('.mobile-nav-link').forEach(link => {
+            link.addEventListener('click', () => mobileMenu.classList.add('hidden'));
+        });
+
+        // Modal Controls
+        const actionModal = document.getElementById('actionModal');
+        const modalBadge = document.getElementById('modalBadge');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalSubtitle = document.getElementById('modalSubtitle');
+        const applicantTier = document.getElementById('applicantTier');
+
+        function openMembershipModal(tierName = 'Professional / Futurist', price = '$150/yr') {
+            modalBadge.textContent = 'STS Membership';
+            modalTitle.textContent = `Join as ${tierName}`;
+            modalSubtitle.textContent = 'Become an official member of the Space Tourism Society and help shape humanity’s off-world future.';
+            
+            // Match select option if present
+            Array.from(applicantTier.options).forEach(opt => {
+                if (opt.value.includes(tierName)) {
+                    applicantTier.value = opt.value;
+                }
+            });
+
+            actionModal.classList.remove('hidden');
+            actionModal.classList.add('flex');
+        }
+
+        function openChapterModal() {
+            modalBadge.textContent = 'Global Expansion';
+            modalTitle.textContent = 'Start a Regional STS Chapter';
+            modalSubtitle.textContent = 'Apply to organize local space futurist salons, analog mission prep, and outreach in your region.';
+            applicantTier.value = 'Start a New Regional Chapter';
+            actionModal.classList.remove('hidden');
+            actionModal.classList.add('flex');
+        }
+
+        function openConferenceModal() {
+            modalBadge.textContent = 'STC & Orbit Awards';
+            modalTitle.textContent = 'Reserve Conference & Gala Access';
+            modalSubtitle.textContent = 'Request early-bird VIP passes, sponsorship decks, or speaker proposals for the annual Space Tourism Conference.';
+            applicantTier.value = 'Space Tourism Conference VIP Pass';
+            actionModal.classList.remove('hidden');
+            actionModal.classList.add('flex');
+        }
+
+        function openPathwayInquiry(pathwayTitle) {
+            modalBadge.textContent = 'Pathway Working Group';
+            modalTitle.textContent = pathwayTitle;
+            modalSubtitle.textContent = 'Connect with STS working groups, analog mission coordinators, and commercial flight advisors.';
+            applicantTier.value = 'Professional / Futurist ($150/yr)';
+            actionModal.classList.remove('hidden');
+            actionModal.classList.add('flex');
+        }
+
+        function closeModal() {
+            actionModal.classList.add('hidden');
+            actionModal.classList.remove('flex');
+        }
+
+        // Close modal on backdrop click
+        actionModal.addEventListener('click', (e) => {
+            if (e.target === actionModal) closeModal();
+        });
+
+        // Handle Modal Form Submission
+        document.getElementById('modalForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const name = document.getElementById('applicantName').value;
+            const tier = applicantTier.value;
+            closeModal();
+            showToast('Welcome to STS, ' + name, `Your registration for "${tier}" has been received. Check your inbox for your digital credentials.`);
+            e.target.reset();
+        });
+
+        // Handle Newsletter Form Submission
+        document.getElementById('newsletterForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            showToast('Subscribed to STS Dispatches', 'You are now on the mission manifest for space tourism news and event alerts.');
+            e.target.reset();
+        });
+
+        // Non-blocking Toast Notification Helper
+        let toastTimeout;
+        function showToast(title, message) {
+            const toast = document.getElementById('toastNotification');
+            document.getElementById('toastTitle').textContent = title;
+            document.getElementById('toastMessage').textContent = message;
+
+            toast.classList.remove('translate-y-24', 'opacity-0');
+            clearTimeout(toastTimeout);
+            toastTimeout = setTimeout(() => {
+                toast.classList.add('translate-y-24', 'opacity-0');
+            }, 4500);
+        }
+
+        // Initialize Page on Load
+        window.addEventListener('DOMContentLoaded', () => {
+            renderPathways();
+            renderChapters('All');
+            lucide.createIcons();
+        });
+    </script>
+</body>
+</html>
